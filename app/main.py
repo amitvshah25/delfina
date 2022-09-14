@@ -1,4 +1,5 @@
 import requests
+import os
 from typing import Union
 from fastapi import FastAPI, Request
 from starlette.responses import StreamingResponse
@@ -24,7 +25,7 @@ async def picture(request: Request):
     return StreamingResponse(unsplash(), media_type="image/jpg")
 
 def unsplash():
-    image_url_response = requests.get('https://api.unsplash.com/photos/random?query=dolphin&client_id=JAH3p8x9vkSc1PCf_LMSok5O_0tlIpS0sCZntCR8nJA')
+    image_url_response = requests.get(os.environ['UNSPLASH_API_URL'] + "&client_id=" + os.environ['UNSPLASH_CLIENT_ID'])
     image_url_response.raise_for_status()
     image_data_response = requests.get(image_url_response.json()['urls']['small'])
     image_data_response.raise_for_status()
