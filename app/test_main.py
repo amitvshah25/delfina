@@ -18,7 +18,6 @@ def test_ratelimit(wait_between_tests):
     response_list = []
     for req_count in range(0, 5):
         response_list.append(client.get("/picture"))
-    assert response_list[0].status_code == 200
-    assert response_list[0].headers.get("content-type") == "image/jpg"
+    assert response_list[0].status_code == 200 # successful first request
     response_codes = map(lambda r: r.status_code, response_list[1:])
-    assert list(response_codes) == [429]*4
+    assert list(response_codes) == [429]*4 # subsequent ones should fail with 429
